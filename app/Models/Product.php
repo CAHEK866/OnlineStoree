@@ -5,9 +5,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    // Связь с заказами через промежуточную таблицу
-    public function orders()
-    {
-        return $this->belongsToMany(Order::class, 'order_product');
-    }
+    public $timestamps = false;
+
+    protected $fillable = [
+        'product_name',  // Имя продукта
+        'price',         // Цена
+        'image',         // Изображение
+    ];
 }

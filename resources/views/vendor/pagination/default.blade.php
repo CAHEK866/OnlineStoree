@@ -42,13 +42,5 @@
                 </li>
             @endif
         </ul>
-       
-<form method="get" action="{{ url('product') }}">
-    <select name="perpage">
-        <option value="5" @if($paginator->perPage() == 5) selected @endif>5</option>
-        <option value="10" @if($paginator->perPage() == 10) selected @endif>10</option>
-        <option value="15" @if($paginator->perPage() == 15) selected @endif>15</option>
-    </select>
-    <input type="submit" value="Изменить">
-</form>
+    </nav>
 @endif

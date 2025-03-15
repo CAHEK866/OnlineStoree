@@ -26,3 +26,10 @@ Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
 Route::get('/transactions/{id}', [TransactionController::class, 'show']);
 
 Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
+
+Route::get('/', [ProductController::class, 'index'])->name('product.index');
+Route::get('/create', [ProductController::class, 'create'])->name('product.create');
+Route::post('/', [ProductController::class, 'store'])->name('product.store');
+Route::get('/edit/{id}', [ProductController::class, 'edit'])->name('product.edit');
+Route::put('/update/{id}', [ProductController::class, 'update'])->name('product.update');
+Route::delete('/destroy/{id}', [ProductController::class, 'destroy'])->name('product.destroy');
