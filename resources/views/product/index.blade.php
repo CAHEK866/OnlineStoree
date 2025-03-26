@@ -1,37 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Все товары</title>
-    <style>
-        table, th, td {
-            border: 1px solid black;
-        }
-        th, td {
-            padding: 8px;
-            text-align: left;
-        }
-        a {
-            color: blue;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-    </style>
-</head>
-<body>
+@extends('layout')
 
-    <h1>Все товары</h1>
+@section('title', 'Все товары')
 
+@section('header', 'Все товары')
+
+@section('content')
     @if(session('success'))
-        <p>{{ session('success') }}</p>
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
     @endif
 
-   
-
-    <table>
+    <table class="table table-bordered">
         <thead>
             <tr>
                 <th>ID</th>
@@ -47,32 +27,32 @@
                     <td>{{ $product->product_name }}</td>
                     <td>{{ $product->price }}</td>
                     <td>
-                        <a href="{{ route('product.edit', $product->id) }}">Редактировать</a> | 
+                        <a href="{{ route('product.edit', $product->id) }}" class="btn btn-warning btn-sm">Редактировать</a> |
                         <form action="{{ route('product.destroy', $product->id) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" style="background:none; border:none; color:blue; cursor:pointer;">Удалить</button>
+                            <button type="submit" class="btn btn-danger btn-sm">Удалить</button>
                         </form>
                     </td>
                 </tr>
             @endforeach
         </tbody>
     </table>
-    <br>
-    <a href="{{ route('product.create') }}">Добавить новый товар</a>
 
-     <form method="GET" action="{{ route('product.index') }}">
+    <br>
+
+    <a href="{{ route('product.create') }}" class="btn btn-primary">Добавить новый товар</a>
+
+    <form method="GET" action="{{ route('product.index') }}" class="mt-3">
         <label for="perpage">Товары на странице:</label>
-        <select name="perpage" id="perpage" onchange="this.form.submit()">
+        <select name="perpage" id="perpage" class="form-select" onchange="this.form.submit()">
             <option value="5" {{ request('perpage') == 5 ? 'selected' : '' }}>5</option>
             <option value="10" {{ request('perpage') == 10 ? 'selected' : '' }}>10</option>
             <option value="15" {{ request('perpage') == 15 ? 'selected' : '' }}>15</option>
         </select>
     </form>
 
-    <div>
-        {{ $products->appends(['perpage' => request('perpage')])->links() }} <!-- Пагинация с учетом параметра per_page -->
+    <div class="mt-3">
+        {{ $products->appends(['perpage' => request('perpage')])->links() }}
     </div>
-
-</body>
-</html>
+@endsection

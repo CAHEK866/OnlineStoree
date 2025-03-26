@@ -3,6 +3,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+
 
 class ProductController extends Controller
 {
@@ -58,13 +60,20 @@ class ProductController extends Controller
         }
 
         $product->save();
-
-        return redirect()->route('product.index')->with('success', 'Товар добавлен!');
+        return redirect()->route('product.index')->with('success', 'Товар обновлен!');
     }
-
     public function destroy(string $id)
-    {
-        Product::destroy($id);
-        return redirect()->route('product.index')->with('success', 'Товар удален!');
+{
+    $product = Product::findOrFail($id);
+
+    if (Gate::denies('destroy-product', $product)) {
+        return redirect('error')->with('message',
+         'У вас нет разрешения на удаление товара номер ' . $id);
     }
+    Product::destroy($id);
+    return redirect()->route('product.index')->with('success', 'Товар удален!');
 }
+
+}
+
+
