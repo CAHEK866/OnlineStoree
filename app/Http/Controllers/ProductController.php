@@ -63,16 +63,22 @@ class ProductController extends Controller
         return redirect()->route('product.index')->with('success', 'Товар обновлен!');
     }
     public function destroy(string $id)
-{
-    $product = Product::findOrFail($id);
-
-    if (Gate::denies('destroy-product', $product)) {
-        return redirect('error')->with('message',
-         'У вас нет разрешения на удаление товара номер ' . $id);
+    {
+        $product = Product::findOrFail($id);
+    
+        // Проверяем, есть ли у пользователя права для удаления товара
+        if (Gate::denies('destroy-product', $product)) {
+            // Если прав нет, возвращаем на страницу списка товаров с сообщением
+            return redirect()->route('product.index')->with('error', 'У вас нет разрешения на удаление товара номер ' . $id);
+        }
+    
+        // Если разрешение есть, удаляем товар
+        Product::destroy($id);
+    
+        // После удаления редиректим обратно на список товаров с успешным сообщением
+        return redirect()->route('product.index')->with('success', 'Товар удален!');
     }
-    Product::destroy($id);
-    return redirect()->route('product.index')->with('success', 'Товар удален!');
-}
+    
 
 }
 

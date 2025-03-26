@@ -5,16 +5,22 @@
 @section('header', 'Все товары')
 
 @section('content')
-    @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
+@if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
+
+@if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+
 
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>ID</th>
                 <th>Наименование</th>
                 <th>Цена</th>
                 <th>Действия</th>
@@ -23,7 +29,7 @@
         <tbody>
             @foreach($products as $product)
                 <tr>
-                    <td>{{ $product->id }}</td>
+
                     <td>{{ $product->product_name }}</td>
                     <td>{{ $product->price }}</td>
                     <td>
@@ -43,7 +49,7 @@
 
     <a href="{{ route('product.create') }}" class="btn btn-primary">Добавить новый товар</a>
 
-    <form method="GET" action="{{ route('product.index') }}" class="mt-3">
+     <form method="GET" action="{{ route('product.index') }}" class="mt-3">
         <label for="perpage">Товары на странице:</label>
         <select name="perpage" id="perpage" class="form-select" onchange="this.form.submit()">
             <option value="5" {{ request('perpage') == 5 ? 'selected' : '' }}>5</option>
@@ -53,6 +59,7 @@
     </form>
 
     <div class="mt-3">
-        {{ $products->appends(['perpage' => request('perpage')])->links() }}
+        {{ $products->appends(['perpage' => request('perpage')])->links('vendor.pagination.bootstrap-4') }}
     </div>
+
 @endsection
